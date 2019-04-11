@@ -28,7 +28,7 @@ kstack_top:
 section .text
 _start:
 	mov esp, kstack_top
-	mov eax, 0xDEADBEEF
+	mov eax, 0xDEADBEEF ; Just here to verify the initialisation manually -> To remove later
 	extern kernel_main
 	call kernel_main
 

@@ -11,7 +11,7 @@ os.iso: kernel grub.cfg
 kernel: src/boot.o src/linker.ld src/kernel.o
 	i686-elf-gcc -T src/linker.ld -o $@ -ffreestanding -O2 -nostdlib src/boot.o src/kernel.o -lgcc
 
-src/boot.o: src/boot.s
+src/boot.o: src/boot.S
 	nasm -f elf32 $< -o $@
 
 src/kernel.o: src/kernel.c

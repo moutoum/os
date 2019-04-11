@@ -1,2 +1,5 @@
 cross
 .vscode
+
+/target
+**/*.rs.bk

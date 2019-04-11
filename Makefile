@@ -2,20 +2,46 @@
 # File Created: 09 Apr 2019 10:58
 # By Maxence Moutoussamy <maxence.moutoussamy1@gmail.com>
 
+LINKER_CFG_FILE = linker.ld
+
+CC = i686-elf-gcc
+CASM = nasm
+
+CFLAGS = \
+	-std=gnu99 \
+	-ffreestanding \
+	-O2 \
+	-Wall \
+	-Wextra \
+	-I ./include
+
+ASMFLAGS = \
+	-f elf32
+
+CSOURCES = \
+	src/kernel.c \
+	src/vga.c
+
+ASMSOURCES = \
+	src/boot.S
+
+OBJS = $(CSOURCES:.c=.o) $(ASMSOURCES:.S=.o)
+
 os.iso: kernel grub.cfg
 	mkdir -p iso/boot/grub
 	cp kernel iso/boot/kernel
 	cp grub.cfg iso/boot/grub/grub.cfg
 	grub-mkrescue -o $@ iso
 
-kernel: src/boot.o src/linker.ld src/kernel.o
-	i686-elf-gcc -T src/linker.ld -o $@ -ffreestanding -O2 -nostdlib src/boot.o src/kernel.o -lgcc
+kernel: $(LINKER_CFG_FILE) $(OBJS)
+	echo $(OBJS)
+	i686-elf-gcc -T linker.ld -o $@ -ffreestanding -O2 -nostdlib $(OBJS) -lgcc
 
-src/boot.o: src/boot.S
-	nasm -f elf32 $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-src/kernel.o: src/kernel.c
-	i686-elf-gcc -c $< -o $@ -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+%.o: %.S
+	$(CASM) $(ASMFLAGS) $< -o $@
 
 .PHONY: run
 run: os.iso
@@ -23,8 +49,7 @@ run: os.iso
 
 .PHONY: clean
 clean:
-	rm -f src/boot.o
-	rm -f src/kernel.o
+	rm -f $(OBJS)
 	rm -rf iso
 
 .PHONY: fclean

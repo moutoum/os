@@ -20,7 +20,7 @@ ASMFLAGS = \
 
 CSOURCES = \
 	src/kernel.c \
-	src/vga.c
+	src/tty.c
 
 ASMSOURCES = \
 	src/boot.S

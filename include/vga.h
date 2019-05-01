@@ -5,11 +5,7 @@
 #if !defined(__VGA_H__)
 #define __VGA_H__
 
-#include <stdint.h>
-
-#define LIGHTER(color) (color + 0x8)
-
-typedef enum vga_color {
+typedef enum {
     // Normal colors
     VGA_COLOR_BLACK = 0x0,
     VGA_COLOR_BLUE = 0x1,
@@ -21,20 +17,14 @@ typedef enum vga_color {
     VGA_COLOR_LIGHT_GRAY = 0x7,
 
     // Light colors
-    VGA_COLOR_DARK_GRAY = LIGHTER(VGA_COLOR_BLACK),
-    VGA_COLOR_LIGHT_BLUE = LIGHTER(VGA_COLOR_BLUE),
-    VGA_COLOR_LIGHT_GREEN = LIGHTER(VGA_COLOR_GREEN),
-    VGA_COLOR_LIGHT_CYAN = LIGHTER(VGA_COLOR_CYAN),
-    VGA_COLOR_LIGHT_RED = LIGHTER(VGA_COLOR_RED),
-    VGA_COLOR_LIGHT_MAGENTA = LIGHTER(VGA_COLOR_MAGENTA),
-    VGA_COLOR_YELLOW = LIGHTER(VGA_COLOR_BROWN),
-    VGA_COLOR_WHITE = LIGHTER(VGA_COLOR_LIGHT_GRAY),
+    VGA_COLOR_DARK_GRAY = 0x8,
+    VGA_COLOR_LIGHT_BLUE = 0x9,
+    VGA_COLOR_LIGHT_GREEN = 0xA,
+    VGA_COLOR_LIGHT_CYAN = 0xB,
+    VGA_COLOR_LIGHT_RED = 0xC,
+    VGA_COLOR_LIGHT_MAGENTA = 0xD,
+    VGA_COLOR_YELLOW = 0xE,
+    VGA_COLOR_WHITE = 0xF,
 } vga_color_t;
-
-void vga_initialize(void);
-void vga_color_set(uint8_t color);
-void vga_put_c(char c);
-void vga_put_str(const char *s);
-uint8_t vga_term_color(vga_color_t foreground, vga_color_t background);
 
 #endif // __VGA_H__
